@@ -1,4 +1,5 @@
 const std = @import("std");
+const options = @import("options");
 
 pub fn main() !void {
     var gpa = std.heap.DebugAllocator(.{}).init;
@@ -10,7 +11,7 @@ pub fn main() !void {
 
     const cwd = std.fs.cwd();
 
-    var stdout_buffer: [1024]u8 = undefined;
+    var stdout_buffer: [options.writer_buffer_size]u8 = undefined;
     var stderr_buffer: [1024]u8 = undefined;
     var stdout_writer = std.fs.File.stdout().writer(&stdout_buffer);
     var stderr_writer = std.fs.File.stderr().writer(&stderr_buffer);
@@ -25,7 +26,7 @@ pub fn main() !void {
         };
         defer file.close();
 
-        var file_buffer: [1024]u8 = undefined;
+        var file_buffer: [options.reader_buffer_size]u8 = undefined;
         var file_reader = file.reader(&file_buffer);
         const reader = &file_reader.interface;
 
